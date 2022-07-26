@@ -1,6 +1,6 @@
 module.exports.formatUserData = ({ name, email }) => ({ name, email });
 
-module.exportsformatMovieData = ({
+module.exports.formatMovieData = ({
   country,
   director,
   duration,
@@ -27,7 +27,3 @@ module.exportsformatMovieData = ({
   movieId,
   owner,
 });
-
-module.exports.findUsersMovies = (movies, userId) => movies.filter(
-  (m) => m.owner.toString() === userId,
-);
