@@ -1,14 +1,15 @@
-const { EntityCastError, RightsError } = require('../classes/errors');
+const { RightsError } = require('../classes/RightsError');
+const { EntityCastError } = require('../classes/EntityCastError');
 const Movie = require('../models/movie');
 const { MESSAGES } = require('../utils/constants');
-const { formatMovieData, findUsersMovies } = require('../helpers/formatData');
+const { formatMovieData } = require('../helpers/formatData');
 
 module.exports.getMovies = (req, res, next) => {
   Movie
-    .find({})
+    .find({ owner: req.user._id })
     .then((movies) => {
       if (!movies) return next(new EntityCastError(MESSAGES.moviesNotFound));
-      res.send(formatMovieData(findUsersMovies(movies, req.user._id)));
+      res.send(formatMovieData(movies));
       return next();
     })
     .catch(next);

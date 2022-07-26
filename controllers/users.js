@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const { MESSAGES } = require('../utils/constants');
-const { EntityCastError } = require('../classes/errors');
+const { EntityCastError } = require('../classes/EntityCastError');
 const { createToken } = require('../helpers/jwt');
 const { formatUserData } = require('../helpers/formatData');
 
@@ -9,7 +9,11 @@ module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
   bcrypt
     .hash(password, 10)
-    .then((hash) => User.create({ name, email, password: hash }))
+    .then(async (hash) => {
+      try {
+        await User.create({ name, email, password: hash });
+      } catch (error) { throw new EntityCastError(MESSAGES.alreadyExist); }
+    })
     .then((user) => {
       if (!user) throw new EntityCastError(MESSAGES.uncorrectData);
       res.send(formatUserData(user));
@@ -23,7 +27,7 @@ module.exports.signin = (req, res, next) => {
   User
     .findByCredentials(email, password)
     .then((user) => {
-      if (!user) throw new EntityCastError(MESSAGES.userNotFound);
+      if (!user) throw new EntityCastError(MESSAGES.wrongAuthData);
       const token = createToken({ _id: user._id });
       res
         .cookie('jwt', token, {
