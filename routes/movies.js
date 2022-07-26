@@ -2,7 +2,7 @@ const router = require('express').Router();
 const {
   getMovies, createMovie, removeMovie, checkOwner,
 } = require('../controllers/movies');
-const { validateMovieDataCreate, validateMovieDataRemove } = require('../helpers/validate');
+const { validateMovieDataCreate, validateMovieDataRemove } = require('../middlewares/validate');
 
 router.get('/', getMovies);
 router.post('/', validateMovieDataCreate, createMovie);
