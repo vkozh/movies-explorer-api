@@ -1,6 +1,8 @@
-const {
-  ConflictError, ServerError, EntityCastError, DataValidationError, WrongPathError,
-} = require('../classes/errors');
+const { ConflictError } = require('../classes/ConflictError');
+const { ServerError } = require('../classes/ServerError');
+const { EntityCastError } = require('../classes/EntityCastError');
+const { DataValidationError } = require('../classes/DataValidationError');
+const { WrongPathError } = require('../classes/WrongPathError');
 const { MESSAGES } = require('../utils/constants');
 
 module.exports.errors = (error, req, res, next) => {
