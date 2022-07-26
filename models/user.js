@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const valid = require('validator');
 const bcrypt = require('bcryptjs');
 const { MESSAGES } = require('../utils/constants');
-const { DataValidationError } = require('../classes/errors');
+const { DataValidationError } = require('../classes/DataValidationError');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -34,11 +34,11 @@ userSchema.statics.findByCredentials = function (email, password) {
     .findOne({ email })
     .select('+password')
     .then((user) => {
-      if (!user) throw new Error();
+      if (!user) throw new DataValidationError(MESSAGES.wrongAuthData);
       return bcrypt
         .compare(password, user.password)
         .then((matched) => {
-          if (!matched) throw new DataValidationError();
+          if (!matched) throw new DataValidationError(MESSAGES.wrongAuthData);
           return user;
         })
         .catch((error) => { throw error; });
