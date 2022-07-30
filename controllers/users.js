@@ -9,15 +9,10 @@ module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
   bcrypt
     .hash(password, 10)
-    .then(async (hash) => {
-      try {
-        await User.create({ name, email, password: hash });
-      } catch (error) { throw new EntityCastError(MESSAGES.alreadyExist); }
-    })
+    .then((hash) => User.create({ name, email, password: hash }))
     .then((user) => {
       if (!user) throw new EntityCastError(MESSAGES.uncorrectData);
       res.send(formatUserData(user));
-      return next();
     })
     .catch(next);
 };
@@ -28,7 +23,7 @@ module.exports.signin = (req, res, next) => {
     .findByCredentials(email, password)
     .then((user) => {
       if (!user) throw new EntityCastError(MESSAGES.wrongAuthData);
-      const token = createToken({ _id: user._id });
+      const token = createToken({ id: user._id });
       res
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: 'none', secure: true,
