@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
   if (!token) return next(new AuthError());
 
   try {
-    req.user._id = checkToken(token);
+    req.user = checkToken(token);
     return next();
   } catch (error) {
     return next(error);

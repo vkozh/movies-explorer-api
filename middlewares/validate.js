@@ -39,7 +39,7 @@ module.exports.validateMovieDataCreate = celebrate(
       image: Joi.string().required().pattern(/https?:\/\/(w{3}\.)?\S+\.\w+(\/\S+)*#?/),
       trailerLink: Joi.string().required().pattern(/https?:\/\/(w{3}\.)?\S+\.\w+(\/\S+)*#?/),
       thumbnail: Joi.string().required().pattern(/https?:\/\/(w{3}\.)?\S+\.\w+(\/\S+)*#?/),
-      movieId: Joi.string().required().hex(),
+      movieId: Joi.string().required().hex().length(24),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
     }),
@@ -49,7 +49,7 @@ module.exports.validateMovieDataCreate = celebrate(
 module.exports.validateMovieDataRemove = celebrate(
   {
     params: Joi.object().keys({
-      movieId: Joi.string().required().hex(),
+      _id: Joi.string().required().hex().length(24),
     }),
   },
 );

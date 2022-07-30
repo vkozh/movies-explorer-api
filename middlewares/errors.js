@@ -35,7 +35,7 @@ module.exports.errors = (error, req, res, next) => {
   }
 
   res.status(statusCode).send({ message });
-  next();
+  return next();
 };
 
 module.exports.notFoundError = (req, res, next) => next(new WrongPathError());
