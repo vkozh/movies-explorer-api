@@ -10,11 +10,11 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routes = require('./routes');
 const limiter = require('./middlewares/rateLimit');
 require('dotenv').config();
+const MONGO_URL = require('./config');
 
 const app = express();
-const { MONGODB = 'mongodb://localhost:27017/moviesdb' } = process.env;
 
-mongoose.connect(MONGODB);
+mongoose.connect(MONGO_URL);
 
 app.use('*', cors);
 app.use(helmet());
