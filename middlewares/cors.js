@@ -1,5 +1,7 @@
 const allowedCors = [
   'http://localhost:3000',
+  'https://filmopoisk.nomoredomains.xyz/',
+  'https://api.filmopoisk.nomoredomains.xyz/',
 ];
 
 module.exports = (req, res, next) => {
