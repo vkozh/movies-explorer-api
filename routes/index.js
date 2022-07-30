@@ -6,10 +6,11 @@ const { notFoundError } = require('../middlewares/errors');
 
 router.post('/signup', validateUserDataSignup, createUser);
 router.post('/signin', validateUserDataSignin, signin);
-router.post('/signout', signout);
 router.use('/users', checkAuth, require('./users'));
 router.use('/movies', checkAuth, require('./movies'));
 
+router.post('/signout', signout);
+router.use('*', checkAuth);
 router.use(notFoundError);
 
 module.exports = router;
