@@ -10,7 +10,7 @@ module.exports.ERRORS = {
 module.exports.MESSAGES = {
   userNotFound: 'Пользователь с указанным _id не найден.',
   movieNotFound: 'Фильм с указанным _id не найден.',
-  moviesNotFound: 'Фильмов нет.',
+  moviesNotFound: 'Фильмы не найдены.',
   emailUncorrect: 'Некорректный email.',
   uncorrectData: 'Переданы некорректные данные.',
   needAuth: 'Необходима авторизация.',
