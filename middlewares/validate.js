@@ -1,4 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
+const { MESSAGES } = require('../utils/constants');
 
 module.exports.validateUserDataSignup = celebrate(
   {
@@ -36,10 +38,25 @@ module.exports.validateMovieDataCreate = celebrate(
       duration: Joi.number().required(),
       year: Joi.string().required(),
       description: Joi.string().required(),
-      image: Joi.string().required().pattern(/https?:\/\/(w{3}\.)?\S+\.\w+(\/\S+)*#?/),
-      trailerLink: Joi.string().required().pattern(/https?:\/\/(w{3}\.)?\S+\.\w+(\/\S+)*#?/),
-      thumbnail: Joi.string().required().pattern(/https?:\/\/(w{3}\.)?\S+\.\w+(\/\S+)*#?/),
-      movieId: Joi.string().required().hex().length(24),
+      image: Joi.string().required().custom((value, helpers) => {
+        if (validator.isURL(value)) {
+          return value;
+        }
+        return helpers.message(MESSAGES.uncorrectDataImg);
+      }),
+      trailerLink: Joi.string().required().custom((value, helpers) => {
+        if (validator.isURL(value)) {
+          return value;
+        }
+        return helpers.message(MESSAGES.uncorrectDataTrailer);
+      }),
+      thumbnail: Joi.string().required().custom((value, helpers) => {
+        if (validator.isURL(value)) {
+          return value;
+        }
+        return helpers.message(MESSAGES.uncorrectDataThumb);
+      }),
+      movieId: Joi.number().required(),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
     }),

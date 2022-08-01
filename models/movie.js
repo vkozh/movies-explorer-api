@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const valid = require('validator');
+const { MESSAGES } = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -23,18 +25,33 @@ const movieSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    match: /https?:\/\/(w{3}\.)?\S+\.\w+(\/\S+)*#?/,
     required: true,
+    validate: {
+      validator(v) {
+        return valid.isURL(v);
+      },
+      message: MESSAGES.uncorrectDataImg,
+    },
   },
   trailerLink: {
     type: String,
-    match: /https?:\/\/(w{3}\.)?\S+\.\w+(\/\S+)*#?/,
     required: true,
+    validate: {
+      validator(v) {
+        return valid.isURL(v);
+      },
+      message: MESSAGES.uncorrectDataTrailer,
+    },
   },
   thumbnail: {
     type: String,
-    match: /https?:\/\/(w{3}\.)?\S+\.\w+(\/\S+)*#?/,
     required: true,
+    validate: {
+      validator(v) {
+        return valid.isURL(v);
+      },
+      message: MESSAGES.uncorrectDataThumb,
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -42,7 +59,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   movieId: {
-    type: String,
+    type: Number,
     required: true,
   },
   nameRU: {

@@ -4,6 +4,7 @@ const { MESSAGES } = require('../utils/constants');
 const { EntityCastError } = require('../classes/EntityCastError');
 const { createToken } = require('../helpers/jwt');
 const { formatUserData } = require('../helpers/formatData');
+const { ConflictError } = require('../classes/ConflictError');
 
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
@@ -14,7 +15,12 @@ module.exports.createUser = (req, res, next) => {
       if (!user) throw new EntityCastError(MESSAGES.uncorrectData);
       res.send(formatUserData(user));
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.code === 11000) {
+        next(new ConflictError());
+      }
+      next(err);
+    });
 };
 
 module.exports.signin = (req, res, next) => {
@@ -23,7 +29,7 @@ module.exports.signin = (req, res, next) => {
     .findByCredentials(email, password)
     .then((user) => {
       if (!user) throw new EntityCastError(MESSAGES.wrongAuthData);
-      const token = createToken({ id: user._id });
+      const token = createToken({ _id: user._id });
       res
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: 'none', secure: true,
@@ -64,5 +70,10 @@ module.exports.updateProfile = (req, res, next) => {
       if (!user) throw new EntityCastError(MESSAGES.userNotFound);
       res.send(formatUserData(user));
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.code === 11000) {
+        next(new ConflictError());
+      }
+      next(err);
+    });
 };

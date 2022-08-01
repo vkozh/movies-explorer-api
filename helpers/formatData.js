@@ -1,6 +1,6 @@
 module.exports.formatUserData = ({ name, email }) => ({ name, email });
 
-module.exports.formatMovieData = ({
+module.exports.getMovieData = ({
   country,
   director,
   duration,
