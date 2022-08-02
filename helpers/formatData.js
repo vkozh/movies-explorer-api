@@ -1,0 +1,31 @@
+module.exports.formatUserData = ({ name, email }) => ({ name, email });
+
+module.exports.getMovieData = ({
+  country,
+  director,
+  duration,
+  year,
+  description,
+  image,
+  trailerLink,
+  nameRU,
+  nameEN,
+  thumbnail,
+  movieId,
+  owner,
+  _id,
+}) => ({
+  country,
+  director,
+  duration,
+  year,
+  description,
+  image,
+  trailerLink,
+  nameRU,
+  nameEN,
+  thumbnail,
+  movieId,
+  owner,
+  _id,
+});
