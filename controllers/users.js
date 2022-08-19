@@ -44,7 +44,8 @@ module.exports.signout = (req, res, next) => {
   res
     .clearCookie('jwt')
     .status(200)
-    .send({ message: 'logout' });
+    .send({ message: 'logout' })
+    .end();
   return next();
 };
 
