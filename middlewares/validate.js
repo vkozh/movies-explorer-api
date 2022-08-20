@@ -56,7 +56,7 @@ module.exports.validateMovieDataCreate = celebrate(
         }
         return helpers.message(MESSAGES.uncorrectDataThumb);
       }),
-      movieId: Joi.number().required(),
+      movieId: Joi.number().required().unique(),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
     }),
