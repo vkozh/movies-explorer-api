@@ -66,8 +66,7 @@ module.exports.validateMovieDataCreate = celebrate(
 module.exports.validateMovieDataRemove = celebrate(
   {
     params: Joi.object().keys({
-      movieId: Joi.string().required(),
-      // .hex().length(24),
+      _id: Joi.string().required().hex().length(24),
     }),
   },
 );

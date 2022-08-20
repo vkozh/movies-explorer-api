@@ -14,7 +14,6 @@ module.exports.getMovies = (req, res, next) => {
 };
 
 module.exports.createMovie = (req, res, next) => {
-  // add only unique movies !!!
   const movieData = req.body;
   Movie
     .create({ ...movieData, owner: req.user._id })
@@ -28,8 +27,7 @@ module.exports.createMovie = (req, res, next) => {
 module.exports.removeMovie = (req, res, next) => {
   // check owner in middlware
   Movie
-    // .findByIdAndDelete(req.params.movieId)
-    .findOneAndDelete({ movieId: req.params.movieId })
+    .findByIdAndDelete(req.params._id)
     .then((movie) => {
       if (!movie) throw new EntityCastError(MESSAGES.movieNotFound);
       res.send(movie);
@@ -39,7 +37,7 @@ module.exports.removeMovie = (req, res, next) => {
 
 module.exports.checkOwner = (req, res, next) => {
   Movie
-    .find({ movieId: req.params.movieId })
+    .findById(req.params._id)
     .then((movie) => {
       if (!movie) throw new EntityCastError(MESSAGES.movieNotFound);
       if (movie.owner.toString() !== req.user._id) throw new RightsError();
