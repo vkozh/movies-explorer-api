@@ -14,6 +14,7 @@ module.exports.getMovies = (req, res, next) => {
 };
 
 module.exports.createMovie = (req, res, next) => {
+  // add only unique movies !!!
   const movieData = req.body;
   Movie
     .create({ ...movieData, owner: req.user._id })
