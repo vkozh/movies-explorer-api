@@ -6,6 +6,6 @@ const { validateMovieDataCreate, validateMovieDataRemove } = require('../middlew
 
 router.get('/', getMovies);
 router.post('/', validateMovieDataCreate, createMovie);
-router.delete('/:movieId', validateMovieDataRemove, checkOwner, removeMovie);
+router.delete('/:_id', validateMovieDataRemove, checkOwner, removeMovie);
 
 module.exports = router;
