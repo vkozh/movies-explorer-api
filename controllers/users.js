@@ -40,12 +40,12 @@ module.exports.signin = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.signout = (req, res, next) => {
+module.exports.signout = (req, res) => {
   res
     .clearCookie('jwt')
     .status(200)
-    .send({ message: 'logout' });
-  return next();
+    .send({ message: 'logout' })
+    .end();
 };
 
 module.exports.getProfile = (req, res, next) => {
