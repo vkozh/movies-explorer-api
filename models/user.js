@@ -34,11 +34,11 @@ userSchema.statics.findByCredentials = function (email, password) {
     .findOne({ email })
     .select('+password')
     .then((user) => {
-      if (!user) throw new AuthError(MESSAGES.wrongAuthData);
+      if (!user) return new AuthError(MESSAGES.wrongAuthData);
       return bcrypt
         .compare(password, user.password)
         .then((matched) => {
-          if (!matched) throw new AuthError(MESSAGES.wrongAuthData);
+          if (!matched) return new AuthError(MESSAGES.wrongAuthData);
           return user;
         });
     });
