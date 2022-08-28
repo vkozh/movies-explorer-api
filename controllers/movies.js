@@ -7,8 +7,8 @@ module.exports.getMovies = (req, res, next) => {
   Movie
     .find({ owner: req.user._id })
     .then((movies) => {
-      if (!movies) throw new EntityCastError(MESSAGES.moviesNotFound);
-      res.send(movies);
+      if (!movies) return new EntityCastError(MESSAGES.moviesNotFound);
+      return res.send(movies);
     })
     .catch(next);
 };
@@ -18,8 +18,8 @@ module.exports.createMovie = (req, res, next) => {
   Movie
     .create({ ...movieData, owner: req.user._id })
     .then((movie) => {
-      if (!movie) throw new EntityCastError(MESSAGES.uncorrectData);
-      res.send(movie);
+      if (!movie) return new EntityCastError(MESSAGES.uncorrectData);
+      return res.send(movie);
     })
     .catch(next);
 };
@@ -29,8 +29,8 @@ module.exports.removeMovie = (req, res, next) => {
   Movie
     .findByIdAndDelete(req.params._id)
     .then((movie) => {
-      if (!movie) throw new EntityCastError(MESSAGES.movieNotFound);
-      res.send(movie);
+      if (!movie) return new EntityCastError(MESSAGES.movieNotFound);
+      return res.send(movie);
     })
     .catch(next);
 };
@@ -39,8 +39,8 @@ module.exports.checkOwner = (req, res, next) => {
   Movie
     .findById(req.params._id)
     .then((movie) => {
-      if (!movie) throw new EntityCastError(MESSAGES.movieNotFound);
-      if (movie.owner.toString() !== req.user._id) throw new RightsError();
+      if (!movie) return new EntityCastError(MESSAGES.movieNotFound);
+      if (movie.owner.toString() !== req.user._id) return new RightsError();
       return next();
     })
     .catch(next);

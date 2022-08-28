@@ -12,8 +12,8 @@ module.exports.createUser = (req, res, next) => {
     .hash(password, 10)
     .then((hash) => User.create({ name, email, password: hash }))
     .then((user) => {
-      if (!user) throw new EntityCastError(MESSAGES.uncorrectData);
-      res.send(formatUserData(user));
+      if (!user) return new EntityCastError(MESSAGES.uncorrectData);
+      return res.send(formatUserData(user));
     })
     .catch((err) => {
       if (err.code === 11000) {
@@ -28,9 +28,9 @@ module.exports.signin = (req, res, next) => {
   User
     .findByCredentials(email, password)
     .then((user) => {
-      if (!user) throw new EntityCastError(MESSAGES.wrongAuthData);
+      if (!user) return new EntityCastError(MESSAGES.wrongAuthData);
       const token = createToken({ _id: user._id });
-      res
+      return res
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: 'none', secure: true,
         })
@@ -52,8 +52,8 @@ module.exports.getProfile = (req, res, next) => {
   User
     .findById(req.user._id)
     .then((user) => {
-      if (!user) throw new EntityCastError(MESSAGES.userNotFound);
-      res.send(formatUserData(user));
+      if (!user) return new EntityCastError(MESSAGES.userNotFound);
+      return res.send(formatUserData(user));
     })
     .catch(next);
 };
@@ -67,8 +67,8 @@ module.exports.updateProfile = (req, res, next) => {
       { new: true, runValidators: true },
     )
     .then((user) => {
-      if (!user) throw new EntityCastError(MESSAGES.userNotFound);
-      res.send(formatUserData(user));
+      if (!user) return new EntityCastError(MESSAGES.userNotFound);
+      return res.send(formatUserData(user));
     })
     .catch((err) => {
       if (err.code === 11000) {
