@@ -42,7 +42,9 @@ module.exports.signin = (req, res, next) => {
 
 module.exports.signout = (req, res) => {
   res
-    .clearCookie('jwt')
+    .clearCookie('jwt', {
+      maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: 'none', secure: true,
+    })
     .status(200)
     .send({ message: 'logout' })
     .end();
