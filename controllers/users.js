@@ -12,14 +12,8 @@ module.exports.createUser = (req, res, next) => {
     .hash(password, 10)
     .then((hash) => User.create({ name, email, password: hash }))
     .then((user) => {
-      if (!user) throw new EntityCastError(MESSAGES.wrongAuthData);
-      const token = createToken({ _id: user._id });
-      res
-        .cookie('jwt', token, {
-          maxAge: 3600000 * 24 * 7, httpOnly: true, sameSite: 'none', secure: true,
-        })
-        .send(formatUserData(user))
-        .end();
+      if (!user) throw new EntityCastError(MESSAGES.uncorrectData);
+      res.send(formatUserData(user));
     })
     .catch((err) => {
       if (err.code === 11000) {
