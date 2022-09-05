@@ -10,7 +10,7 @@ router.use('/users', checkAuth, require('./users'));
 router.use('/movies', checkAuth, require('./movies'));
 
 router.post('/signout', signout);
-router.use('*', checkAuth);
+router.use('*');
 router.use(notFoundError);
 
 module.exports = router;
